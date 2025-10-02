@@ -1,4 +1,3 @@
-// app/index.js (Tela de Login)
 import { useState } from "react";
 import {
   View,
@@ -11,6 +10,7 @@ import {
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "expo-router";
+import axios from "axios"; // Adiciona importação do axios
 
 export default function Login() {
   const router = useRouter();
@@ -20,17 +20,16 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!username || !password) return Alert.alert("Campos obrigatórios");
+    if (!username || !password) return Alert.alert("Por Favor, Preencha os Campos obrigatórios");
     setLoading(true);
 
     try {
-      const res = await fetch("https://fakestoreapi.com/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+      const res = await axios.post("https://fakestoreapi.com/auth/login", {
+        username,
+        password,
       });
 
-      const data = await res.json();
+      const data = res.data;
 
       if (data.token) {
         setToken(data.token);

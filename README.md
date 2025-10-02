@@ -25,6 +25,9 @@ Aplicativo móvel desenvolvido em **React Native** com **Expo Router** e **TypeS
     ```bash
     npm install
     ```
+    ```bash
+    npm install axios
+    ```
 4.  **Inicie o servidor de desenvolvimento Expo:**
     ```bash
     npx expo start

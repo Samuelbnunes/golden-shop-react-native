@@ -11,6 +11,7 @@ import {
 import ProductCard from "../components/ProductCard";
 import { useRouter, useNavigation } from "expo-router";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios"; // Adiciona importação do axios
 
 export default function Home() {
   const router = useRouter();
@@ -55,8 +56,8 @@ export default function Home() {
         ? `https://fakestoreapi.com/products/category/${category}`
         : "https://fakestoreapi.com/products";
 
-      const res = await fetch(url);
-      const data = await res.json();
+      const res = await axios.get(url);
+      const data = res.data;
       setProducts(data);
     } catch (error) {
       Alert.alert("Problemas");

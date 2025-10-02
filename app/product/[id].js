@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { formatPriceBRL } from "../../utils/formatPrice";
+import axios from "axios"; // Adiciona importação do axios
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams();
@@ -23,8 +24,8 @@ export default function ProductDetail() {
     async function fetchProduct() {
       setLoading(true);
       try {
-        const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-        const data = await res.json();
+        const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
+        const data = res.data;
         setProduct(data);
       } catch (error) {
         setProduct(null);

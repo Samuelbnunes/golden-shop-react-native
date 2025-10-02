@@ -9,6 +9,7 @@ import {
   Text,
 } from "react-native";
 import { useRouter } from "expo-router";
+import axios from "axios";
 
 export default function Login({ setToken }) {
   const router = useRouter();
@@ -17,25 +18,28 @@ export default function Login({ setToken }) {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!username || !password) return Alert.alert("Campos obrigatórios");
+    if (!username || !password) {
+      Alert.alert("Campos obrigatórios");
+      return;
+    }
     setLoading(true);
     try {
-      const res = await fetch("https://fakestoreapi.com/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+      const res = await axios.post("https://fakestoreapi.com/auth/login", {
+        username,
+        password,
       });
-      const data = await res.json();
+      const data = res.data;
       if (data.token) {
-        setToken(data.token); // só define token após login correto
+        setToken(data.token);
         setLoading(false);
+        // router.replace("/home"); // Descomente se quiser navegar após login
       } else {
-        setLoading(false);
         Alert.alert("Nome de usuário ou senha inválidos");
+        setLoading(false);
       }
     } catch (error) {
-      setLoading(false);
       Alert.alert("Algum erro ocorreu");
+      setLoading(false);
     }
   };
 
@@ -47,6 +51,7 @@ export default function Login({ setToken }) {
         style={styles.input}
         value={username}
         onChangeText={setUsername}
+        autoCapitalize="none"
       />
       <TextInput
         placeholder="Password"
@@ -54,6 +59,7 @@ export default function Login({ setToken }) {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        autoCapitalize="none"
       />
       {loading ? (
         <ActivityIndicator size="large" color="#000000ff" />
