@@ -4,19 +4,15 @@ Aplicativo Mobile - É um aplicativo mobile em desenvolvido em **React Native** 
 
 # BriqueShop - Projeto Atitus Educação
 
-## Visão Geral
-
-Aplicativo móvel desenvolvido em **React Native** com **Expo Router** e **TypeScript** para simular um e-commerce. O objetivo principal é demonstrar o consumo de APIs RESTful (Fake Store API), gestão de autenticação e navegação em um projeto acadêmico da Atitus Educação.
-
 ## Funcionalidades Chave
 
 - **Autenticação:** Login com credenciais da Fake Store API.
-- **Listagem de Produtos:** Exibição com carregamento (ActivityIndicator) e preços formatados em Iene Japonês (JPY).
+- **Listagem de Produtos:** Exibição com carregamento (ActivityIndicator) e preços formatados em Reais (BRL).
 - **Filtro por Categoria:** Permite filtrar a lista ou exibi-la completa.
-- **Detalhes do Produto:** Customização extrema (Imagem do Vampeta, preço x63, descrições mágicas).
+- **Detalhes do Produto:** Customização.
 - **Navegação:** Utilização de **React Navigation** para navegação entre telas, com cabeçalhos personalizados e botões de Logout e Informações.
-- **Estilo:** Interface baseada na cor **Rosa** com todas as caixas/componentes estilizados com **Sombras Verdes**.
-- **Tratamento de Erros:** Exibição de `Alert` com a frase "se ferrou" em caso de falha.
+- **Estilo:** Interface baseada na cor **Roxa** com todas as caixas/componentes estilizados com **branco e azul** no seu constrate.
+- **Tratamento de Erros:** Exibição de `Alert` quando há uma falha de campos.
 
 ## 🚀 Como Rodar o Projeto
 
