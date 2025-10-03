@@ -1,92 +1,81 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   Image,
+  TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
   ScrollView,
-  Button,
-  Alert,
-  TouchableOpacity,
 } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import axios from "axios";
 import { formatPriceBRL } from "../../utils/formatPrice";
-import axios from "axios"; // Adiciona importação do axios
 
 export default function ProductDetail() {
-  const { id } = useLocalSearchParams();
-  const router = useRouter();
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { id } = route.params;
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchProduct() {
+    const fetchProduct = async () => {
       setLoading(true);
       try {
         const res = await axios.get(`https://fakestoreapi.com/products/${id}`);
-        const data = res.data;
-        setProduct(data);
+        setProduct(res.data);
       } catch (error) {
         setProduct(null);
-        Alert.alert("Erro de Carga", "Não foi possível carregar o produto.");
       } finally {
         setLoading(false);
       }
-    }
-    if (id) fetchProduct();
+    };
+    fetchProduct();
   }, [id]);
 
-  if (loading)
+  if (loading) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#8B008B" />
+        <ActivityIndicator size="large" color="#20e5ffff" />
       </View>
     );
+  }
 
-  if (!product || !product.id)
+  if (!product || !product.id) {
     return (
       <View style={styles.loading}>
-        <Text style={{ color: "#fff", marginBottom: 20, fontSize: 18 }}>
-          Produto não encontrado
-        </Text>
-        <Button
-          title="Voltar para Produtos"
-          color="#8B008B"
-          onPress={() => router.replace("/home")}
-        />
+        <Text style={styles.notFound}>Produto não encontrado.</Text>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.replace("Home")}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.backButtonText}>Voltar</Text>
+        </TouchableOpacity>
       </View>
     );
+  }
+
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.card}>
         <View style={styles.imageWrapper}>
-          <Image
-            source={{ uri: product.image }}
-            style={styles.image}
-            resizeMode="contain"
-          />
+          <Image source={{ uri: product.image }} style={styles.image} />
         </View>
         <Text style={styles.title}>{product.title}</Text>
+        <Text style={styles.category}>{product.category}</Text>
+        <Text style={styles.description}>{product.description}</Text>
         <View style={styles.priceContainer}>
+          <Text style={styles.priceLabel}>Preço:</Text>
           <Text style={styles.price}>{formatPriceBRL(product.price)}</Text>
         </View>
-        <Text style={styles.category}>Categoria: {product.category}</Text>
-        <Text style={styles.description}>{product.description}</Text>
-
         <TouchableOpacity
-          style={{
-            backgroundColor: "#8B008B",
-            paddingVertical: 12,
-            paddingHorizontal: 32,
-            borderRadius: 8,
-            marginTop: 10,
-          }}
-          onPress={() => router.replace("/home")}
+          style={styles.backButton}
+          onPress={() => navigation.replace("Home")}
+          activeOpacity={0.8}
         >
-          <Text style={{ color: "#fff", fontSize: 18, fontWeight: "bold" }}>
-            Voltar
-          </Text>
+          <Text style={styles.backButtonText}>Voltar para Produtos</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -94,20 +83,28 @@ export default function ProductDetail() {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flexGrow: 1,
+  container: {
     alignItems: "center",
-    justifyContent: "center",
+    padding: 24,
+    backgroundColor: "#f4eaffff",
+    flexGrow: 1,
+  },
+  card: {
     backgroundColor: "#fff",
-    borderRadius: 18,
-    padding: 20,
-    elevation: 8,
+    borderRadius: 24,
+    padding: 28,
+    alignItems: "center",
     width: "100%",
-    maxWidth: 400,
+    maxWidth: 420,
+    shadowColor: "#000",
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 12,
   },
   imageWrapper: {
-    width: 220,
-    height: 220,
+    width: 200,
+    height: 200,
     borderRadius: 24,
     overflow: "hidden",
     backgroundColor: "#f2e3ffff",
@@ -122,49 +119,76 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    resizeMode: "contain",
   },
   title: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: "bold",
     marginBottom: 8,
-    color: "#000",
+    color: "#3e0298ff",
     textAlign: "center",
   },
   category: {
-    fontSize: 24,
+    fontSize: 20,
     marginBottom: 12,
-    color: "#000000ff",
+    color: "#00738dff",
     textAlign: "center",
   },
   description: {
     fontSize: 16,
     marginBottom: 18,
-    color: "#000000",
-    backgroundColor: "#f2f2f2ff",
+    color: "#333",
+    backgroundColor: "#f7f7f7",
     borderRadius: 8,
     padding: 10,
+    textAlign: "center",
   },
   priceContainer: {
     flexDirection: "row",
     marginBottom: 18,
-    gap: 8,
     justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
   },
   priceLabel: {
-    fontSize: 18,
-    color: "#ff25ffff",
+    fontSize: 20,
+    color: "#a600ffff",
     fontWeight: "bold",
   },
   price: {
-    fontSize: 64,
+    fontSize: 36,
     fontWeight: "bold",
     color: "#4dff00ff",
     marginLeft: 8,
+  },
+  backButton: {
+    backgroundColor: "#20e5ffff",
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.18,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  backButtonText: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+    letterSpacing: 1,
   },
   loading: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f7e9ff",
+    backgroundColor: "#f4eaffff",
+  },
+  notFound: {
+    fontSize: 22,
+    color: "#a600ffff",
+    marginBottom: 18,
+    textAlign: "center",
   },
 });

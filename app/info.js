@@ -1,11 +1,9 @@
 import React, { useLayoutEffect } from "react";
-import { View, Text, StyleSheet} from "react-native";
-// import { TouchableOpacity } from "react-native";
-import { useNavigation, useRouter } from "expo-router";
+import { View, Text, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Info() {
   const navigation = useNavigation();
-  const router = useRouter();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -16,30 +14,12 @@ export default function Info() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>BriqueShop</Text>
-
       <View style={styles.card}>
         <Text style={styles.text}>Desenvolvido por:</Text>
-        <Text style={styles.text}>Bernardo Antunes Heckler</Text>
+        <Text style={styles.author}>Bernardo Antunes Heckler</Text>
         <Text style={styles.raFooter}>RA: 1137118</Text>
         <Text style={styles.institution}>Instituição: Atitus Educação</Text>
       </View>
-
-      {/* <View style={styles.exitButtonContainer}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#8B008B",
-            paddingVertical: 12,
-            paddingHorizontal: 32,
-            borderRadius: 8,
-            marginTop: 10,
-          }}
-          onPress={() => BackHandler.exitApp()}
-        >
-          <Text style={{ color: "#fff", fontSize: 18, fontWeight: "bold" }}>
-            Sair do Aplicativo
-          </Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 }
@@ -53,36 +33,51 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 50,
+    fontSize: 48,
     fontWeight: "bold",
-    marginBottom: 30,
-    color: "#ffffffff",
+    marginBottom: 50,
+    color: "#fff",
+    letterSpacing: 2,
   },
   card: {
-    padding: 20,
-    borderRadius: 10,
+    padding: 28,
+    borderRadius: 18,
     width: "90%",
+    height: 300,
+    justifyContent: "center",
     alignItems: "center",
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 8,
-    color: "#fff",
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 12,
   },
-  text: { fontSize: 24, fontWeight: "700", marginBottom: 10, color: "#fff" },
+  text: {
+    fontSize: 22,
+    fontWeight: "700",
+    marginBottom: 10,
+    color: "#757575ff",
+    textAlign: "center",
+  },
+  author: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#000000ff",
+    marginBottom: 8,
+    textAlign: "center",
+  },
   institution: {
-    fontSize: 24,
+    fontSize: 22,
     marginTop: 10,
-    fontStyle: "normal",
-    color: "#ffffffff",
+    color: "#000000ff",
+    textAlign: "center",
   },
   raFooter: {
-    fontSize: 24,
-    marginTop: 30,
+    fontSize: 22,
+    marginTop: 18,
     fontWeight: "bold",
-    color: "#ffffffff",
+    color: "#676767ff",
+    textAlign: "center",
   },
-  // exitButtonContainer: {
-  //   marginTop: 40,
-  //   width: "90%",
-  //   marginTop: 200,
-  // },
 });
