@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacity,
   View,
@@ -9,9 +9,19 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from "react-native";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+
+const COLORS = {
+  background: "#020201",
+  inputText: "#fff",
+  buttonBackground: "#020201",
+  buttonText: "#f1d680",
+  errorText: "#ff3333",
+  labelText: "#f1d680",
+};
 
 export default function Login() {
   const { setToken } = useAuth();
@@ -50,38 +60,45 @@ export default function Login() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={styles.card}>
-        <Text style={styles.title}>BriqueShop</Text>
-        <Text style={styles.subtitle}>Faça login para continuar</Text>
+        {/* Logo PNG */}
+        <Image
+          source={require("../assets/logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        {/* Campos de login */}
+        <Text style={styles.label}>Usuário</Text>
         <TextInput
-          placeholder="Usuário"
+          placeholder="Digite seu usuário"
           style={styles.input}
           value={username}
           onChangeText={setUsername}
           autoCapitalize="none"
-          placeholderTextColor="#bdbdbd"
+          placeholderTextColor={COLORS.labelText}
         />
+        <Text style={styles.label}>Senha</Text>
         <TextInput
-          placeholder="Senha"
+          placeholder="Digite sua senha"
           style={styles.input}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
           autoCapitalize="none"
-          placeholderTextColor="#bdbdbd"
+          placeholderTextColor={COLORS.labelText}
         />
         {loading ? (
           <ActivityIndicator
             size="large"
-            color="#20e5ffff"
+            color="#d4a74f"
             style={{ marginTop: 20 }}
           />
         ) : (
           <TouchableOpacity
-            style={styles.loginButton}
+            style={styles.button}
             onPress={handleLogin}
             activeOpacity={0.8}
           >
-            <Text style={styles.loginButtonText}>Entrar</Text>
+            <Text style={styles.buttonText}>Entrar</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -92,67 +109,52 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#a600ffff",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: COLORS.background,
+    padding: 20,
   },
   card: {
     width: "100%",
     maxWidth: 370,
-    backgroundColor: "#fff",
+    backgroundColor: "#020201",
     borderRadius: 24,
     padding: 32,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.18,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 6 },
     elevation: 12,
   },
-  title: {
-    fontSize: 38,
-    fontWeight: "bold",
-    color: "#a600ffff",
-    marginBottom: 8,
-    textAlign: "center",
-    letterSpacing: 2,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: "#686dffff",
-    marginBottom: 24,
-    textAlign: "center",
+  logo: {
+    width: 400,
+    height: 400,
+    marginBottom: 30,
   },
   input: {
-    width: "100%",
-    borderWidth: 1,
-    borderColor: "#20e5ffff",
-    marginBottom: 16,
-    fontSize: 20,
+    color: COLORS.inputText,
+    borderRadius: 8,
     padding: 12,
-    borderRadius: 12,
-    backgroundColor: "#f7f7f7",
-    color: "#333",
-    shadowColor: "#20e5ffff",
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
+    marginBottom: 16,
+    width: "90%",
+    borderWidth: 1,
+    borderColor: COLORS.labelText,
   },
-  loginButton: {
-    backgroundColor: "#20e5ffff",
-    paddingVertical: 16,
-    borderRadius: 12,
+  button: {
+    backgroundColor: COLORS.buttonBackground,
+    padding: 14,
+    borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
-    width: "100%",
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    width: "90%",
   },
-  loginButtonText: {
-    color: "#fff",
-    fontSize: 24,
+  buttonText: {
+    color: COLORS.buttonText,
+    fontSize: 18,
     fontWeight: "bold",
-    letterSpacing: 1,
+  },
+  label: {
+    color: COLORS.labelText,
+    fontSize: 16,
+    marginBottom: 6,
+    alignSelf: "flex-start",
+    width: "90%",
   },
 });

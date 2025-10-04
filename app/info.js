@@ -1,53 +1,105 @@
 import React, { useLayoutEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../context/AuthContext";
+import { MaterialIcons } from "@expo/vector-icons";
+
+const COLORS = {
+  background: "#020201",
+  cardBackground: "#020201",
+  title: "#d4a74f",
+  text: "#fff",
+  author: "#d4a74f",
+  institution: "#fff",
+  raFooter: "#f1d680",
+};
+
+const integrantes = [
+  { nome: "Samuel Nunes", ra: "1136923" },
+  { nome: "Dionatha Diniz", ra: "1137190" },
+  { nome: "Arthur Gilmar Biolchi", ra: "1137267" },
+];
 
 export default function Info() {
   const navigation = useNavigation();
+  const { setToken } = useAuth();
+
+  const handleLogout = () => {
+    setToken(null);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: "Informações Gerais",
+      headerTitle: "Informações",
+      headerStyle: {
+        backgroundColor: "#020201",
+      },
+      headerTitleStyle: {
+        color: "#d4a74f",
+      },
+      headerTintColor: "#d4a74f",
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.headerButton}
+          onPress={handleLogout}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons name="logout" size={28} color="#d4a74f" />
+        </TouchableOpacity>
+      ),
     });
-  }, [navigation]);
+  }, [navigation, setToken]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>BriqueShop</Text>
+    <ScrollView
+      style={styles.scrollContainer}
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+      <Image
+        source={require("../assets/logo.png")}
+        style={styles.logo}
+        resizeMode="contain"
+      />
       <View style={styles.card}>
-        <Text style={styles.text}>Desenvolvido por:</Text>
-        <Text style={styles.author}>Bernardo Antunes Heckler</Text>
-        <Text style={styles.raFooter}>RA: 1137118</Text>
+        <Text style={styles.text}>Desenvolvedores:</Text>
+        {integrantes.map((item, idx) => (
+          <View key={idx} style={styles.integranteItem}>
+            <Text style={styles.author}>{item.nome}</Text>
+            <Text style={styles.raFooter}>RA: {item.ra}</Text>
+          </View>
+        ))}
         <Text style={styles.institution}>Instituição: Atitus Educação</Text>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  container: {
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#686dffff",
     padding: 20,
   },
-  title: {
-    fontSize: 48,
-    fontWeight: "bold",
-    marginBottom: 50,
-    color: "#fff",
-    letterSpacing: 2,
+  logo: {
+    width: 400,
+    height: 400,
+    marginBottom: 30,
   },
   card: {
     padding: 28,
     borderRadius: 18,
     width: "90%",
-    height: 300,
+    minHeight: 300,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: COLORS.cardBackground,
+    shadowColor: COLORS.shadow,
     shadowOpacity: 0.18,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 6 },
@@ -57,27 +109,42 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "700",
     marginBottom: 10,
-    color: "#757575ff",
+    color: COLORS.text,
     textAlign: "center",
   },
   author: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#000000ff",
-    marginBottom: 8,
+    color: COLORS.author,
+    marginBottom: 2,
     textAlign: "center",
   },
   institution: {
     fontSize: 22,
-    marginTop: 10,
-    color: "#000000ff",
+    marginTop: 18,
+    color: COLORS.institution,
     textAlign: "center",
   },
   raFooter: {
-    fontSize: 22,
-    marginTop: 18,
-    fontWeight: "bold",
-    color: "#676767ff",
+    fontSize: 18,
+    marginBottom: 8,
+    color: COLORS.raFooter,
     textAlign: "center",
+  },
+  integranteItem: {
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  headerButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    borderRadius: 8,
+    marginHorizontal: 4,
+  },
+  headerButtonText: {
+    color: "#d4a74f",
+    fontSize: 20,
+    fontWeight: "bold",
+    letterSpacing: 1,
   },
 });

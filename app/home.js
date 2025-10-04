@@ -2,7 +2,6 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Text,
-  Button,
   ActivityIndicator,
   StyleSheet,
   ScrollView,
@@ -13,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import ProductCard from "../components/ProductCard";
 import axios from "axios";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function Home() {
   const navigation = useNavigation();
@@ -22,7 +22,6 @@ export default function Home() {
   const [category, setCategory] = useState("");
 
   const categories = [
-    "electronics",
     "jewelery",
     "men's clothing",
     "women's clothing",
@@ -35,13 +34,19 @@ export default function Home() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "Produtos",
+      headerStyle: {
+        backgroundColor: "#020201",
+      },
+      headerTitleStyle: {
+        color: "#d4a74f",
+      },
       headerLeft: () => (
         <TouchableOpacity
           style={styles.headerButton}
           onPress={handleLogout}
           activeOpacity={0.8}
         >
-          <Text style={styles.headerButtonText}>Logout</Text>
+          <MaterialIcons name="logout" size={28} color="#d4a74f" />
         </TouchableOpacity>
       ),
       headerRight: () => (
@@ -50,7 +55,7 @@ export default function Home() {
           onPress={() => navigation.push("Info")}
           activeOpacity={0.8}
         >
-          <Text style={styles.headerButtonText}>Info</Text>
+          <MaterialIcons name="info" size={28} color="#d4a74f" />
         </TouchableOpacity>
       ),
     });
@@ -78,7 +83,7 @@ export default function Home() {
   if (loading)
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#a600ffff" />
+        <ActivityIndicator size="large" color="#d4a74f" />
         <Text style={styles.loadingText}>Carregando produtos...</Text>
       </View>
     );
@@ -155,7 +160,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f4eaffff",
+    backgroundColor: "#020201",
     paddingTop: 10,
   },
   filterContainer: {
@@ -163,37 +168,35 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingHorizontal: 10,
     marginBottom: 10,
-    paddingVertical: 8,
+    paddingVertical: 0,
   },
   filterButton: {
-    height: 40,
-    backgroundColor: "#686dffff", // Roxo não-ativo
+    backgroundColor: "#020201",
+    borderWidth: 2,
+    borderColor: "#d4a74f",
     borderRadius: 18,
     marginHorizontal: 5,
-    paddingVertical: 12,
-    paddingHorizontal: 18,
+    padding: 10,
     justifyContent: "center",
     alignItems: "center",
   },
   filterButtonActive: {
-    backgroundColor: "#a600ffff",
+    backgroundColor: "#d4a74f",
+    borderColor: "#d4a74f",
     elevation: 6,
   },
   filterButtonContent: {
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
   },
   filterText: {
-    color: "#fff",
+    color: "#d4a74f",
     fontSize: 18,
     fontWeight: "bold",
-    letterSpacing: 1,
     textAlign: "center",
   },
   filterTextActive: {
-    color: "#fff",
-    textDecorationLine: "underline",
+    color: "#020201",
   },
   listContent: {
     paddingBottom: 24,
@@ -202,12 +205,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fdeeffff",
+    backgroundColor: "#020201",
   },
   loadingText: {
     marginTop: 18,
     fontSize: 20,
-    color: "#a600ffff",
+    color: "#d4a74f",
     fontWeight: "bold",
   },
   headerButton: {
@@ -215,7 +218,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderRadius: 8,
     marginHorizontal: 4,
-    elevation: 2,
   },
   headerButtonText: {
     color: "#fff",

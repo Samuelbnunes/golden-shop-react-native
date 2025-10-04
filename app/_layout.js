@@ -11,7 +11,7 @@ function RootLayoutContent() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4652ffff" />
+        <ActivityIndicator size="large" color="#d4a74f" />
       </View>
     );
   }
@@ -19,8 +19,8 @@ function RootLayoutContent() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: '#4652ffff' }, // Fundo Rosa
-        headerTintColor: '#ffffffff',
+        headerStyle: { backgroundColor: '#d4a74f' }, // Fundo Rosa
+        headerTintColor: '#020201',
         headerTitleAlign: 'center',
         headerShadowVisible: true, 
         // Sombra verde no título
@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4652ffff',
+    backgroundColor: '#020201',
   },
 });
